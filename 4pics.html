@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Final Puzzle: PRACTICE</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .four-pics { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 10px; 
+    margin-bottom: 20px; 
+  }
+  .four-pics img { 
+    width: 100%; 
+    border-radius: 10px; 
+  }
+  #answer { 
+    font-size: 24px; 
+    font-weight: bold; 
+    margin-bottom: 20px; 
+    min-height: 30px; 
+  }
+  #message {
+    font-size: 20px;
+    color: green;
+    margin-bottom: 20px;
+  }
+  .letter-tiles { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 8px; 
+  }
+  .letter-tiles button { 
+    padding: 10px 15px; 
+    font-size: 18px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    border: 1px solid #ddd;
+    background: #fafafa;
+    transition: all 0.2s ease;
+  }
+  .letter-tiles button:hover { 
+    background: #201f1f; 
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+<main class="card">
+<h1>Guess the Word</h1>
+<p class="verse">(2 Timothy 1:6 — “For this reason I remind you to fan into flame the gift of God, which is in you through the laying on of my hands.”)</p>
+
+<div class="four-pics">
+  <img src="pictures/1.jpg" alt="Training">
+  <img src="pictures/2.jpg" alt="Practice">
+  <img src="pictures/3.jpg" alt="Endurance">
+  <img src="pictures/4.jpg" alt="Knowledge">
+</div>
+
+<p>Click letters to form the word:</p>
+<div id="answer"></div>
+<div id="message"></div>
+
+<div class="letter-tiles" id="tiles"></div>
+
+<script>
+let correctWord = "PRACTICE";
+let userWord = "";
+let letters = ['P','R','A','C','T','I','C','E','S','N','O'];
+
+// Shuffle function
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+// Create shuffled letter tiles
+function createTiles() {
+  let container = document.getElementById('tiles');
+  container.innerHTML = '';
+  shuffle(letters);
+  letters.forEach(letter => {
+    let btn = document.createElement('button');
+    btn.innerText = letter;
+    btn.onclick = () => chooseLetter(btn);
+    container.appendChild(btn);
+  });
+}
+
+// Handle letter selection
+function chooseLetter(btn){
+  userWord += btn.innerText;
+  document.getElementById("answer").innerText = userWord;
+
+  if(userWord === correctWord){
+    document.getElementById("message").innerText = "Correct! You’ve reached the final message.";
+    setTimeout(()=>{ location.href = "third.html"; }, 1000);
+  } else if(userWord.length >= correctWord.length){
+    userWord = "";
+    document.getElementById("answer").innerText = "";
+    document.getElementById("message").innerText = "Try again!";
+  }
+}
+
+createTiles();
+</script>
+</main>
+</body>
+</html>
